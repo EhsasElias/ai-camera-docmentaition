@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="دليل إعداد وتشغيل AI Camera Backend Fresh محليًا">
+    <title>AI Camera Backend Fresh | دليل المطور</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="container header-top">
+            <div class="brand-wrap">
+                <p class="brand-kicker">Developer Guide</p>
+                <h1>AI Camera Backend Fresh</h1>
+                <p class="brand-subtitle">دليل الإعداد والتشغيل المحلي للمشروع</p>
+            </div>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="تبديل الوضع">
+                <span class="theme-icon" aria-hidden="true">◐</span>
+                <span id="theme-label">الوضع الداكن</span>
+            </button>
+        </div>
+        <div class="container header-tabs">
+            <nav class="role-tabs" aria-label="تبويبات الأقسام">
+                <button class="role-tab is-active" type="button" data-role-tab="super-admin" aria-selected="true">سوبر أدمن</button>
+                <button class="role-tab" type="button" data-role-tab="admin" aria-selected="false">أدمن</button>
+                <button class="role-tab" type="button" data-role-tab="app" aria-selected="false">التطبيق</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-grid">
+        <aside class="toc" aria-label="جدول المحتوى">
+            <h2>محتويات الصفحة</h2>
+            <nav>
+                <a href="#overview">نظرة عامة</a>
+                <a href="#requirements">المتطلبات</a>
+                <a href="#installation">التثبيت</a>
+                <a href="#environment">إعداد البيئة</a>
+                <a href="#database">إعداد قاعدة البيانات</a>
+                <a href="#frontend">أصول الواجهة</a>
+                <a href="#tests">تشغيل الاختبارات</a>
+                <a href="#server">تشغيل السيرفر</a>
+                <a href="#status">الحالة الحالية</a>
+                <a href="#troubleshooting">استكشاف الأخطاء</a>
+            </nav>
+        </aside>
+
+        <section class="content">
+            <article id="overview" class="card">
+                <h2>نظرة عامة قصيرة</h2>
+                <p>
+                    هذا المشروع هو تطبيق Backend مبني باستخدام Laravel.
+                    يوضح هذا الدليل خطوات الإعداد والتشغيل محليًا للمرة الأولى بطريقة واضحة ومنظمة.
+                </p>
+            </article>
+
+            <article id="role-panels" class="card role-panels-card">
+                <h2>حالة الواجهات حسب الدور</h2>
+
+                <section class="role-panel is-active" data-role-panel="super-admin" aria-live="polite">
+                    <h3>سوبر أدمن</h3>
+                    <p>صفحات Super Admin فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                </section>
+
+                <section class="role-panel" data-role-panel="admin" aria-live="polite">
+                    <h3>أدمن</h3>
+                    <p>صفحات Admin فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                </section>
+
+                <section class="role-panel" data-role-panel="app" aria-live="polite">
+                    <h3>التطبيق</h3>
+                    <p>صفحات App فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                </section>
+            </article>
+
+            <article id="requirements" class="card">
+                <h2>المتطلبات الأساسية</h2>
+                <ul class="checklist">
+                    <li>PHP</li>
+                    <li>Composer</li>
+                    <li>Node.js و npm</li>
+                    <li>قاعدة بيانات (MySQL أو أي محرك يدعمه Laravel)</li>
+                    <li>بيئة تشغيل Laravel محلية مثل XAMPP أو Sail أو Valet</li>
+                </ul>
+            </article>
+
+            <article id="installation" class="card">
+                <h2>التثبيت</h2>
+                <p>نفّذ الأوامر التالية بالترتيب:</p>
+                <div class="steps">
+                    <div class="step-item"><span class="step-number">1</span><p><code>cd ai-camera-backend-fresh</code></p></div>
+                    <div class="step-item"><span class="step-number">2</span><p><code>composer install</code></p></div>
+                    <div class="step-item"><span class="step-number">3</span><p><code>cp .env.example .env</code></p></div>
+                    <div class="step-item"><span class="step-number">4</span><p><code>php artisan key:generate</code></p></div>
+                    <div class="step-item"><span class="step-number">5</span><p>Set database values in <code>.env</code></p></div>
+                    <div class="step-item"><span class="step-number">6</span><p><code>php artisan migrate --seed</code></p></div>
+                    <div class="step-item"><span class="step-number">7</span><p><code>npm install</code></p></div>
+                    <div class="step-item"><span class="step-number">8</span><p><code>npm run dev</code></p></div>
+                    <div class="step-item"><span class="step-number">9</span><p><code>php artisan test --compact</code></p></div>
+                    <div class="step-item"><span class="step-number">10</span><p><code>php artisan serve</code></p></div>
+                </div>
+                <div class="code-wrap">
+                    <button class="copy-btn" data-copy-target="install-cmds" type="button">نسخ الأوامر</button>
+                    <pre id="install-cmds"><code>cd ai-camera-backend-fresh
+composer install
+cp .env.example .env
+php artisan key:generate
+# Set database values in .env
+php artisan migrate --seed
+npm install
+npm run dev
+php artisan test --compact
+php artisan serve</code></pre>
+                </div>
+            </article>
+
+            <article id="environment" class="card">
+                <h2>إعداد البيئة</h2>
+                <p>
+                    افتح ملف <code>.env</code> وحدّث إعدادات بيئتك محليًا.
+                    يجب تعديل بيانات قاعدة البيانات يدويًا قبل تشغيل migration.
+                </p>
+                <div class="code-wrap">
+                    <button class="copy-btn" data-copy-target="env-sample" type="button">نسخ المثال</button>
+                    <pre id="env-sample"><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password</code></pre>
+                </div>
+            </article>
+
+            <article id="database" class="card">
+                <h2>إعداد قاعدة البيانات</h2>
+                <p>بعد تعديل <code>.env</code> شغّل:</p>
+                <div class="code-wrap">
+                    <pre><code>php artisan migrate --seed</code></pre>
+                </div>
+            </article>
+
+            <article id="frontend" class="card">
+                <h2>أصول الواجهة الأمامية</h2>
+                <div class="code-wrap">
+                    <pre><code>npm install
+npm run dev</code></pre>
+                </div>
+            </article>
+
+            <article id="tests" class="card">
+                <h2>تشغيل الاختبارات</h2>
+                <div class="code-wrap">
+                    <pre><code>php artisan test --compact</code></pre>
+                </div>
+            </article>
+
+            <article id="server" class="card">
+                <h2>تشغيل خادم التطوير</h2>
+                <div class="code-wrap">
+                    <pre><code>php artisan serve</code></pre>
+                </div>
+            </article>
+
+            <article id="status" class="card status-card">
+                <h2>الحالة الحالية / القيود</h2>
+                <ul>
+                    <li><strong>Admin pages:</strong> empty</li>
+                    <li><strong>Super Admin pages:</strong> empty</li>
+                    <li><strong>App pages:</strong> empty</li>
+                </ul>
+                <p>هذه الصفحات Placeholder حاليًا وغير مطبقة بعد.</p>
+            </article>
+
+            <article id="troubleshooting" class="card">
+                <h2>استكشاف الأخطاء وإصلاحها</h2>
+                <div class="issue">
+                    <h3>مشكلة في مفتاح التطبيق</h3>
+                    <pre><code>php artisan key:generate</code></pre>
+                </div>
+                <div class="issue">
+                    <h3>مشكلة في قاعدة البيانات</h3>
+                    <ul>
+                        <li>تأكد من صحة القيم داخل <code>.env</code>.</li>
+                        <li>تأكد أن خدمة قاعدة البيانات تعمل.</li>
+                    </ul>
+                </div>
+                <div class="issue">
+                    <h3>مشاكل في أصول الواجهة</h3>
+                    <pre><code>npm install
+npm run dev</code></pre>
+                </div>
+                <div class="issue">
+                    <h3>فشل في Migration</h3>
+                    <ul>
+                        <li>تأكد من وجود قاعدة البيانات.</li>
+                        <li>تحقق من صلاحيات المستخدم.</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
