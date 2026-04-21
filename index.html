@@ -26,6 +26,7 @@
                 <span id="theme-label">الوضع الداكن</span>
             </button>
         </div>
+
         <div class="container header-tabs">
             <nav class="role-tabs" aria-label="تبويبات الأقسام">
                 <button class="role-tab is-active" type="button" data-role-tab="super-admin" aria-selected="true">سوبر أدمن</button>
@@ -66,17 +67,113 @@
 
                 <section class="role-panel is-active" data-role-panel="super-admin" aria-live="polite">
                     <h3>سوبر أدمن</h3>
-                    <p>صفحات Super Admin فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                    <p>إعداد محلي بخطوة واحدة (انسخ وشغّل):</p>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="super-admin-one-step" type="button">نسخ الإعداد</button>
+                        <pre id="super-admin-one-step"><code>cd ai-camera-backend-fresh
+composer install
+cp .env.example .env
+php artisan key:generate
+# عدّل بيانات قاعدة البيانات داخل .env
+php artisan migrate --seed
+npm install
+npm run dev
+php artisan test --compact
+php artisan serve</code></pre>
+                    </div>
                 </section>
 
                 <section class="role-panel" data-role-panel="admin" aria-live="polite">
                     <h3>أدمن</h3>
-                    <p>صفحات Admin فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                    <p>إعداد محلي بخطوة واحدة (انسخ وشغّل):</p>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="admin-one-step" type="button">نسخ الإعداد</button>
+                        <pre id="admin-one-step"><code>cd ai-camera-backend-fresh
+composer install
+cp .env.example .env
+php artisan key:generate
+# عدّل بيانات قاعدة البيانات داخل .env
+php artisan migrate --seed
+npm install
+npm run dev
+php artisan test --compact
+php artisan serve</code></pre>
+                    </div>
                 </section>
 
                 <section class="role-panel" data-role-panel="app" aria-live="polite">
                     <h3>التطبيق</h3>
-                    <p>صفحات App فارغة حاليًا (Placeholder) وغير مطبقة بعد.</p>
+                    <p>
+                        إليك دليل إعداد كامل خطوة بخطوة للمشروع، بدءًا من استنساخ المستودع وحتى تشغيل التطبيق:
+                    </p>
+
+                    <div class="steps">
+                        <div class="step-item">
+                            <span class="step-number">1</span>
+                            <p>
+                                استنسخ المستودع:
+                                <br>
+                                <code>git clone &lt;your-repo-url&gt;</code>
+                                <br>
+                                <code>cd ai-camera-app</code>
+                            </p>
+                        </div>
+
+                        <div class="step-item">
+                            <span class="step-number">2</span>
+                            <p>
+                                ثبّت الاعتماديات:
+                                <br>
+                                <code>npm install</code>
+                                <br>
+                                <small>(أو <code>yarn install</code> إذا كنت تستخدم Yarn)</small>
+                            </p>
+                        </div>
+
+                        <div class="step-item">
+                            <span class="step-number">3</span>
+                            <p>
+                                (اختياري) إذا كنت تريد إعادة ضبط المشروع إلى حالة فارغة:
+                                <br>
+                                <code>node reset-project.js</code>
+                                <br>
+                                <small>(اتبع التعليمات الظاهرة لنقل الملفات الحالية أو حذفها)</small>
+                            </p>
+                        </div>
+
+                        <div class="step-item">
+                            <span class="step-number">4</span>
+                            <p>
+                                شغّل خادم Expo للتطوير:
+                                <br>
+                                <code>npx expo start</code>
+                            </p>
+                        </div>
+
+                        <div class="step-item">
+                            <span class="step-number">5</span>
+                            <p>
+                                افتح التطبيق على جهازك أو المحاكي باستخدام رمز QR أو تطبيق Expo Go.
+                            </p>
+                        </div>
+
+                        <div class="step-item">
+                            <span class="step-number">6</span>
+                            <p>
+                                أصبح التطبيق الآن جاهزًا للتطوير والتشغيل.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-one-step" type="button">نسخ إعداد التطبيق</button>
+                        <pre id="app-one-step"><code>git clone &lt;your-repo-url&gt;
+cd ai-camera-app
+npm install
+# أو yarn install
+node reset-project.js
+npx expo start</code></pre>
+                    </div>
                 </section>
             </article>
 
@@ -99,20 +196,21 @@
                     <div class="step-item"><span class="step-number">2</span><p><code>composer install</code></p></div>
                     <div class="step-item"><span class="step-number">3</span><p><code>cp .env.example .env</code></p></div>
                     <div class="step-item"><span class="step-number">4</span><p><code>php artisan key:generate</code></p></div>
-                    <div class="step-item"><span class="step-number">5</span><p>Set database values in <code>.env</code></p></div>
+                    <div class="step-item"><span class="step-number">5</span><p>عدّل بيانات قاعدة البيانات داخل <code>.env</code></p></div>
                     <div class="step-item"><span class="step-number">6</span><p><code>php artisan migrate --seed</code></p></div>
                     <div class="step-item"><span class="step-number">7</span><p><code>npm install</code></p></div>
                     <div class="step-item"><span class="step-number">8</span><p><code>npm run dev</code></p></div>
                     <div class="step-item"><span class="step-number">9</span><p><code>php artisan test --compact</code></p></div>
                     <div class="step-item"><span class="step-number">10</span><p><code>php artisan serve</code></p></div>
                 </div>
+
                 <div class="code-wrap">
                     <button class="copy-btn" data-copy-target="install-cmds" type="button">نسخ الأوامر</button>
                     <pre id="install-cmds"><code>cd ai-camera-backend-fresh
 composer install
 cp .env.example .env
 php artisan key:generate
-# Set database values in .env
+# عدّل بيانات قاعدة البيانات داخل .env
 php artisan migrate --seed
 npm install
 npm run dev
@@ -171,19 +269,21 @@ npm run dev</code></pre>
             <article id="status" class="card status-card">
                 <h2>الحالة الحالية / القيود</h2>
                 <ul>
-                    <li><strong>Admin pages:</strong> empty</li>
-                    <li><strong>Super Admin pages:</strong> empty</li>
-                    <li><strong>App pages:</strong> empty</li>
+                    <li><strong>صفحات الأدمن:</strong> تمت إضافة إعداد بخطوة واحدة</li>
+                    <li><strong>صفحات السوبر أدمن:</strong> تمت إضافة إعداد بخطوة واحدة</li>
+                    <li><strong>صفحات التطبيق:</strong> تمت إضافة دليل إعداد كامل</li>
                 </ul>
-                <p>هذه الصفحات Placeholder حاليًا وغير مطبقة بعد.</p>
+                <p>أصبحت أقسام Super Admin و Admin تحتوي على أوامر الإعداد الكاملة، كما تم إضافة دليل إعداد كامل لقسم التطبيق.</p>
             </article>
 
             <article id="troubleshooting" class="card">
                 <h2>استكشاف الأخطاء وإصلاحها</h2>
+
                 <div class="issue">
                     <h3>مشكلة في مفتاح التطبيق</h3>
                     <pre><code>php artisan key:generate</code></pre>
                 </div>
+
                 <div class="issue">
                     <h3>مشكلة في قاعدة البيانات</h3>
                     <ul>
@@ -191,11 +291,13 @@ npm run dev</code></pre>
                         <li>تأكد أن خدمة قاعدة البيانات تعمل.</li>
                     </ul>
                 </div>
+
                 <div class="issue">
                     <h3>مشاكل في أصول الواجهة</h3>
                     <pre><code>npm install
 npm run dev</code></pre>
                 </div>
+
                 <div class="issue">
                     <h3>فشل في Migration</h3>
                     <ul>
