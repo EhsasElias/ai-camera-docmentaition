@@ -3,309 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="دليل إعداد وتشغيل AI Camera Backend Fresh محليًا">
-    <title>AI Camera Backend Fresh | دليل المطور</title>
+    <meta name="description" content="توثيق عربي شامل ومبسط وتقني لمشروعي AI Camera Backend و AI Camera App">
+    <title>AI Camera | التوثيق العربي الشامل</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+    <div class="bg-shape bg-shape-1" aria-hidden="true"></div>
+    <div class="bg-shape bg-shape-2" aria-hidden="true"></div>
 
     <header class="site-header">
         <div class="container header-top">
             <div class="brand-wrap">
-                <p class="brand-kicker">Developer Guide</p>
-                <h1>AI Camera Backend Fresh</h1>
-                <p class="brand-subtitle">دليل الإعداد والتشغيل المحلي للمشروع</p>
+                <p class="brand-kicker">AI Camera Docs</p>
+                <h1>توثيق AI Camera بالعربية</h1>
+                <p class="brand-subtitle">
+                    نسخة واحدة مفهومة لغير التقنيين + مرجع تقني مفصل للمطورين
+                    لمشروعي <code>ai-camera-backend-fresh</code> و <code>ai-camera-app</code>
+                </p>
             </div>
-            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="تبديل الوضع">
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="تبديل المظهر">
                 <span class="theme-icon" aria-hidden="true">◐</span>
                 <span id="theme-label">الوضع الداكن</span>
             </button>
         </div>
 
-        <div class="container header-tabs">
-            <nav class="role-tabs" aria-label="تبويبات الأقسام">
-                <button class="role-tab is-active" type="button" data-role-tab="super-admin" aria-selected="true">سوبر أدمن</button>
-                <button class="role-tab" type="button" data-role-tab="admin" aria-selected="false">أدمن</button>
-                <button class="role-tab" type="button" data-role-tab="app" aria-selected="false">التطبيق</button>
+        <div class="container tabs-row">
+            <nav class="project-tabs" aria-label="اختيار المشروع">
+                <button class="project-tab is-active" type="button" data-doc-tab="backend" aria-selected="true">
+                    توثيق Backend
+                </button>
+                <button class="project-tab" type="button" data-doc-tab="app" aria-selected="false">
+                    توثيق App
+                </button>
             </nav>
         </div>
     </header>
 
     <main class="container page-grid">
         <aside class="toc" aria-label="جدول المحتوى">
-            <h2>محتويات الصفحة</h2>
-            <nav>
-                <a href="#overview">نظرة عامة</a>
-                <a href="#requirements">المتطلبات</a>
-                <a href="#installation">التثبيت</a>
-                <a href="#environment">إعداد البيئة</a>
-                <a href="#database">إعداد قاعدة البيانات</a>
-                <a href="#frontend">أصول الواجهة</a>
-                <a href="#tests">تشغيل الاختبارات</a>
-                <a href="#server">تشغيل السيرفر</a>
-                <a href="#status">الحالة الحالية</a>
-                <a href="#troubleshooting">استكشاف الأخطاء</a>
+            <h2>محتويات الدليل</h2>
+
+            <nav class="toc-group is-active" data-toc="backend">
+                <a href="#backend-overview">نظرة عامة</a>
+                <a href="#backend-nontech">شرح مبسط لغير التقنيين</a>
+                <a href="#backend-architecture">المعمارية التقنية</a>
+                <a href="#backend-route-files">ملفات Routes وما تفعل</a>
+                <a href="#backend-setup">الإعداد والتشغيل</a>
+                <a href="#backend-seeders">Seeders وبيانات البداية</a>
+                <a href="#backend-auth">المصادقة والصلاحيات</a>
+                <a href="#backend-api-employee">API الموظف</a>
+                <a href="#backend-api-workers">API العمال</a>
+                <a href="#backend-ops">الأوامر التشغيلية</a>
+                <a href="#backend-integration">تكامل التطبيق</a>
+                <a href="#backend-troubleshooting">استكشاف الأعطال</a>
+            </nav>
+
+            <nav class="toc-group" data-toc="app">
+                <a href="#app-overview">نظرة عامة</a>
+                <a href="#app-nontech">شرح مبسط لغير التقنيين</a>
+                <a href="#app-setup">الإعداد والتشغيل</a>
+                <a href="#app-env">متغيرات البيئة</a>
+                <a href="#app-route-files">ملفات Routes وما تفعل</a>
+                <a href="#app-data-layer">طبقة البيانات</a>
+                <a href="#app-auth">المصادقة والجلسة</a>
+                <a href="#app-attendance">تدفق الحضور</a>
+                <a href="#app-notifications-violations">الإشعارات والمخالفات</a>
+                <a href="#app-testing">الاختبار والبناء</a>
+                <a href="#app-integration">التكامل مع Backend</a>
             </nav>
         </aside>
 
-        <section class="content">
-            <article id="overview" class="card">
-                <h2>نظرة عامة قصيرة</h2>
-                <p>
-                    هذا المشروع هو تطبيق Backend مبني باستخدام Laravel.
-                    يوضح هذا الدليل خطوات الإعداد والتشغيل محليًا للمرة الأولى بطريقة واضحة ومنظمة.
-                </p>
-            </article>
-
-            <article id="role-panels" class="card role-panels-card">
-                <h2>حالة الواجهات حسب الدور</h2>
-
-                <section class="role-panel is-active" data-role-panel="super-admin" aria-live="polite">
-                    <h3>سوبر أدمن</h3>
-                    <p>إعداد محلي بخطوة واحدة (انسخ وشغّل):</p>
-                    <div class="code-wrap">
-                        <button class="copy-btn" data-copy-target="super-admin-one-step" type="button">نسخ الإعداد</button>
-                        <pre id="super-admin-one-step"><code>cd ai-camera-backend-fresh
-composer install
-cp .env.example .env
-php artisan key:generate
-# عدّل بيانات قاعدة البيانات داخل .env
-php artisan migrate --seed
-npm install
-npm run dev
-php artisan test --compact
-php artisan serve</code></pre>
-                    </div>
-                </section>
-
-                <section class="role-panel" data-role-panel="admin" aria-live="polite">
-                    <h3>أدمن</h3>
-                    <p>إعداد محلي بخطوة واحدة (انسخ وشغّل):</p>
-                    <div class="code-wrap">
-                        <button class="copy-btn" data-copy-target="admin-one-step" type="button">نسخ الإعداد</button>
-                        <pre id="admin-one-step"><code>cd ai-camera-backend-fresh
-composer install
-cp .env.example .env
-php artisan key:generate
-# عدّل بيانات قاعدة البيانات داخل .env
-php artisan migrate --seed
-npm install
-npm run dev
-php artisan test --compact
-php artisan serve</code></pre>
-                    </div>
-                </section>
-
-                <section class="role-panel" data-role-panel="app" aria-live="polite">
-                    <h3>التطبيق</h3>
+        <section class="docs-content">
+            <section class="doc-panel is-active" data-doc-panel="backend">
+                <article id="backend-overview" class="card">
+                    <h2>نظرة عامة على <code>ai-camera-backend-fresh</code></h2>
                     <p>
-                        إليك دليل إعداد كامل خطوة بخطوة للمشروع، بدءًا من استنساخ المستودع وحتى تشغيل التطبيق:
+                        هذا المشروع هو مركز النظام. منه تدار الحسابات، الكاميرات، الحضور، المخالفات،
+                        وإرسال البيانات للتطبيقات والعمال (Recorder وInference Worker).
+                    </p>
+                    <ul class="checklist">
+                        <li><strong>Core:</strong> Laravel 12 + PHP 8.4</li>
+                        <li><strong>Web UI:</strong> Inertia + Vue 3 + Vite</li>
+                        <li><strong>Security:</strong> Sanctum + Fortify + Roles/Permissions</li>
+                        <li><strong>Multi-tenant:</strong> Stancl Tenancy</li>
+                    </ul>
+                </article>
+
+                <article id="backend-nontech" class="card">
+                    <h2>شرح مبسط لغير التقنيين</h2>
+                    <p>
+                        إذا كنت مديرًا أو مشرفًا: اعتبر هذا المشروع "غرفة التحكم" الرئيسية للنظام.
+                        كل ما يحدث في التطبيق يمر من هنا: تسجيل دخول الموظف، تسجيل الحضور، الإشعارات،
+                        المخالفات، وتقارير الإدارة.
+                    </p>
+                    <h3>من يستخدمه؟</h3>
+                    <ul class="checklist">
+                        <li><strong>السوبر أدمن:</strong> يدير الشركات/المستأجرين والباقات والإعدادات العامة.</li>
+                        <li><strong>أدمن الشركة:</strong> يدير الموظفين والمواقع والكاميرات والحضور والمخالفات.</li>
+                        <li><strong>التطبيق (الموظف):</strong> يرسل طلباته ويستقبل البيانات من API الموظف.</li>
+                    </ul>
+                    <h3>ماذا يحدث يوميًا؟</h3>
+                    <ol class="ordered-list">
+                        <li>الموظف يسجل الدخول من التطبيق.</li>
+                        <li>يرسل Check-in/Check-out للحضور.</li>
+                        <li>النظام يسجل الأحداث ويرسل الإشعارات.</li>
+                        <li>المشرف يراجع المخالفات والتقارير من لوحة الويب.</li>
+                    </ol>
+                </article>
+
+                <article id="backend-architecture" class="card">
+                    <h2>المعمارية التقنية</h2>
+                    <pre><code>Mobile App (Expo)
+    -> Tenant Domain /api/employee/*
+    -> Tenant Database
+
+Recorder Worker
+    -> Central Domain /api/recorder/*
+    -> segment lifecycle + storage config
+
+Inference Worker
+    -> Central Domain /api/inference/*
+    -> claim jobs + ingest + face profiles
+
+Tenant Dashboard
+    -> /dashboard/*
+
+Super Admin Dashboard
+    -> /super/*</code></pre>
+                    <div class="note">
+                        <p><strong>مهم جدًا:</strong> تطبيق الموبايل يتصل بدومين Tenant وليس الدومين المركزي.</p>
+                    </div>
+                </article>
+
+                <article id="backend-route-files" class="card">
+                    <h2>ملفات Routes في Backend وما الذي تفعله</h2>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th>الملف</th>
+                                    <th>وظيفته</th>
+                                    <th>أمثلة مسارات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>routes/api.php</code></td>
+                                    <td>API الرئيسي: موظف + Recorder + Inference Worker</td>
+                                    <td><code>/api/employee/*</code>, <code>/api/recorder/*</code>, <code>/api/inference/*</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/tenant.php</code></td>
+                                    <td>مسارات لوحة أدمن الشركة (Tenant Dashboard)</td>
+                                    <td><code>/dashboard/*</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/super.php</code></td>
+                                    <td>مسارات لوحة السوبر أدمن</td>
+                                    <td><code>/super/*</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/web.php</code></td>
+                                    <td>مسارات ويب عامة + تثبيت recorder + استدعاء super/settings</td>
+                                    <td><code>/</code>, <code>/install/recorder/*</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/settings.php</code></td>
+                                    <td>إعدادات الحساب للمستخدمين داخل لوحة الويب</td>
+                                    <td><code>/settings/profile</code>, <code>/settings/password</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/console.php</code></td>
+                                    <td>جدولة أوامر دورية (Scheduler)</td>
+                                    <td><code>attendance:finalize-open-days</code>, <code>recordings:cleanup-conversions</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>routes/channels.php</code></td>
+                                    <td>قنوات Broadcasting (إن وجدت realtime events)</td>
+                                    <td>قنوات الإشعارات/البث</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article id="backend-setup" class="card">
+                    <h2>الإعداد والتشغيل المحلي</h2>
+                    <p>نفّذ الخطوات التالية داخل <code>ai-camera-backend-fresh</code>:</p>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="backend-setup-code" type="button">نسخ الأوامر</button>
+                        <pre id="backend-setup-code"><code>cd ai-camera-backend-fresh
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm install
+npm run dev
+php artisan serve</code></pre>
+                    </div>
+                    <h3>ملاحظات التنفيذ سطرًا بسطر</h3>
+                    <ol class="ordered-list step-notes">
+                        <li><code>cd ai-camera-backend-fresh</code><p class="muted">ينقلك إلى مجلد المشروع الصحيح قبل أي أمر آخر.</p></li>
+                        <li><code>composer install</code><p class="muted">يثبّت حزم Laravel وPHP داخل <code>vendor</code>.</p></li>
+                        <li><code>cp .env.example .env</code><p class="muted">ينسخ ملف البيئة. في PowerShell استخدم <code>Copy-Item .env.example .env</code>.</p></li>
+                        <li><code>php artisan key:generate</code><p class="muted">ينشئ <code>APP_KEY</code> المطلوب لتشفير الجلسات والبيانات.</p></li>
+                        <li><code>php artisan migrate --seed</code><p class="muted">ينشئ الجداول ويضيف بيانات البداية (seeders).</p></li>
+                        <li><code>npm install</code><p class="muted">يثبّت مكتبات الواجهة (Vite/Vue/JS).</p></li>
+                        <li><code>npm run dev</code><p class="muted">يشغّل Vite لتجميع الواجهة أثناء التطوير.</p></li>
+                        <li><code>php artisan serve</code><p class="muted">يشغّل خادم Laravel المحلي للوصول إلى النظام من المتصفح.</p></li>
+                    </ol>
+                    <p class="muted">للتطوير اليومي السريع: <code>composer dev</code></p>
+                </article>
+
+                <article id="backend-seeders" class="card">
+                    <h2>Seeders وبيانات البداية</h2>
+                    <p>
+                        Seeders هي ملفات تملأ قاعدة البيانات ببيانات أولية (مثل الأدوار، المواقع، مستخدمين تجريبيين)
+                        حتى يعمل النظام مباشرة بعد التثبيت.
                     </p>
 
-                    <div class="steps">
-                        <div class="step-item">
-                            <span class="step-number">1</span>
-                            <p>
-                                استنسخ المستودع:
-                                <br>
-                                <code>git clone &lt;your-repo-url&gt;</code>
-                                <br>
-                                <code>cd ai-camera-app</code>
-                            </p>
-                        </div>
+                    <h3>الأوامر الأساسية</h3>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="backend-seeders-cmd" type="button">نسخ الأوامر</button>
+                        <pre id="backend-seeders-cmd"><code>php artisan db:seed
+php artisan db:seed --class=CentralDatabaseSeeder
+php artisan db:seed --class=TenantDatabaseSeeder
+php artisan tenants:seed</code></pre>
+                    </div>
+                    <h3>ملاحظات أوامر Seeders سطرًا بسطر</h3>
+                    <ol class="ordered-list step-notes">
+                        <li><code>php artisan db:seed</code><p class="muted">يشغّل seeder الافتراضي <code>DatabaseSeeder</code>.</p></li>
+                        <li><code>php artisan db:seed --class=CentralDatabaseSeeder</code><p class="muted">يملأ قاعدة البيانات المركزية (Central) فقط.</p></li>
+                        <li><code>php artisan db:seed --class=TenantDatabaseSeeder</code><p class="muted">يملأ بيانات المستأجر الحالي إذا كنت داخل سياق tenant.</p></li>
+                        <li><code>php artisan tenants:seed</code><p class="muted">يشغّل seeder المستأجرين على جميع الـ tenants أو المحدد منهم بالأمر.</p></li>
+                    </ol>
 
-                        <div class="step-item">
-                            <span class="step-number">2</span>
-                            <p>
-                                ثبّت الاعتماديات:
-                                <br>
-                                <code>npm install</code>
-                                <br>
-                                <small>(أو <code>yarn install</code> إذا كنت تستخدم Yarn)</small>
-                            </p>
-                        </div>
+                    <h3>قائمة Seeders الموجودة</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th>Seeder</th>
+                                    <th>ماذا يضيف؟</th>
+                                    <th>النطاق</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>DatabaseSeeder</code></td><td>مدخل عام لتشغيل باقي Seeders</td><td>عام</td></tr>
+                                <tr><td><code>CentralDatabaseSeeder</code></td><td>بيانات المركز (Central) الأساسية</td><td>Central</td></tr>
+                                <tr><td><code>CentralPermissionSeeder</code></td><td>صلاحيات وأدوار المنصة المركزية</td><td>Central</td></tr>
+                                <tr><td><code>TenantDatabaseSeeder</code></td><td>بيانات مستأجر كاملة كبداية</td><td>Tenant</td></tr>
+                                <tr><td><code>TenantPermissionSeeder</code></td><td>أدوار وصلاحيات مستوى الشركة</td><td>Tenant</td></tr>
+                                <tr><td><code>RoleSeeder</code></td><td>تعريف الأدوار الأساسية</td><td>Tenant/عام</td></tr>
+                                <tr><td><code>DepartmentSeeder</code></td><td>أقسام الشركة</td><td>Tenant</td></tr>
+                                <tr><td><code>ShiftGroupSeeder</code></td><td>ورديات وأوقات عمل</td><td>Tenant</td></tr>
+                                <tr><td><code>SiteSeeder</code></td><td>مواقع/فروع الشركة</td><td>Tenant</td></tr>
+                                <tr><td><code>ZoneSeeder</code></td><td>مناطق داخل الموقع</td><td>Tenant</td></tr>
+                                <tr><td><code>EmployeeSeeder</code></td><td>موظفون تجريبيون وربطهم بالكيانات</td><td>Tenant</td></tr>
+                                <tr><td><code>ViolationsSeeder</code></td><td>بيانات مخالفات تجريبية</td><td>Tenant</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
 
-                        <div class="step-item">
-                            <span class="step-number">3</span>
-                            <p>
-                                (اختياري) إذا كنت تريد إعادة ضبط المشروع إلى حالة فارغة:
-                                <br>
-                                <code>node reset-project.js</code>
-                                <br>
-                                <small>(اتبع التعليمات الظاهرة لنقل الملفات الحالية أو حذفها)</small>
-                            </p>
-                        </div>
+                <article id="backend-auth" class="card">
+                    <h2>المصادقة والصلاحيات</h2>
+                    <ul class="checklist">
+                        <li>لوحة الويب تعتمد جلسات <code>web guard</code>.</li>
+                        <li>مسارات <code>/super/*</code> تتطلب <code>super-admin</code>.</li>
+                        <li>API الموظف يستخدم Bearer Token من Sanctum (موديل <code>Employee</code>).</li>
+                        <li>API recorder/inference يستخدم <code>RecorderClient</code> و<code>InferenceWorkerClient</code>.</li>
+                    </ul>
+                </article>
 
-                        <div class="step-item">
-                            <span class="step-number">4</span>
-                            <p>
-                                شغّل خادم Expo للتطوير:
-                                <br>
-                                <code>npx expo start</code>
-                            </p>
-                        </div>
+                <article id="backend-api-employee" class="card">
+                    <h2>مرجع API الموظف (Tenant)</h2>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th>المسار</th>
+                                    <th>الطريقة</th>
+                                    <th>الوصف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>/employee/auth/login</code></td><td>POST</td><td>تسجيل دخول الموظف</td></tr>
+                                <tr><td><code>/employee/auth/forgot-password</code></td><td>POST</td><td>طلب OTP</td></tr>
+                                <tr><td><code>/employee/auth/verify-otp</code></td><td>POST</td><td>التحقق من OTP</td></tr>
+                                <tr><td><code>/employee/auth/reset-password</code></td><td>POST</td><td>إعادة تعيين كلمة المرور</td></tr>
+                                <tr><td><code>/employee/me</code></td><td>GET</td><td>بيانات الموظف الحالي</td></tr>
+                                <tr><td><code>/employee/attendance</code></td><td>GET/POST</td><td>سجل الحضور + check in/out</td></tr>
+                                <tr><td><code>/employee/attendance/today</code></td><td>GET</td><td>حالة الحضور اليوم</td></tr>
+                                <tr><td><code>/employee/notifications</code></td><td>GET</td><td>قائمة الإشعارات</td></tr>
+                                <tr><td><code>/employee/violations</code></td><td>GET</td><td>قائمة المخالفات</td></tr>
+                                <tr><td><code>/employee/violations/{id}/appeals</code></td><td>POST</td><td>تقديم اعتراض</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
 
-                        <div class="step-item">
-                            <span class="step-number">5</span>
-                            <p>
-                                افتح التطبيق على جهازك أو المحاكي باستخدام رمز QR أو تطبيق Expo Go.
-                            </p>
-                        </div>
+                <article id="backend-api-workers" class="card">
+                    <h2>مرجع API العمال (Recorder / Inference)</h2>
+                    <h3>Recorder API</h3>
+                    <ul class="checklist">
+                        <li><code>GET /recorder/bootstrap</code></li>
+                        <li><code>POST /recorder/heartbeat</code></li>
+                        <li><code>POST /recorder/segments/pending|complete|failed</code></li>
+                        <li><code>GET /recorder/update</code> + <code>/update/release</code></li>
+                    </ul>
 
-                        <div class="step-item">
-                            <span class="step-number">6</span>
-                            <p>
-                                أصبح التطبيق الآن جاهزًا للتطوير والتشغيل.
-                            </p>
-                        </div>
+                    <h3>Inference Worker API</h3>
+                    <ul class="checklist">
+                        <li><code>GET /inference/bootstrap</code>, <code>/assignments</code>, <code>/model-registry</code></li>
+                        <li><code>POST /inference/jobs/claim</code> ثم <code>/complete|fail|release</code></li>
+                        <li><code>POST /inference/raw-events</code>, <code>/attendance-events</code>, <code>/violations</code></li>
+                    </ul>
+                </article>
+
+                <article id="backend-ops" class="card">
+                    <h2>الأوامر التشغيلية المهمة</h2>
+                    <h3>إصدار Tokens</h3>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="backend-token-code" type="button">نسخ الأوامر</button>
+                        <pre id="backend-token-code"><code>php artisan inference:issue-token {tenant_id} {client_name} --rotate
+php artisan inference-worker:issue-token {worker_name} {client_name} --rotate
+php artisan recorder:issue-token {node_name} "{client_name}" --rotate</code></pre>
                     </div>
 
+                    <h3>أوامر Inference</h3>
                     <div class="code-wrap">
-                        <button class="copy-btn" data-copy-target="app-one-step" type="button">نسخ إعداد التطبيق</button>
-                        <pre id="app-one-step"><code>git clone &lt;your-repo-url&gt;
-cd ai-camera-app
+                        <button class="copy-btn" data-copy-target="backend-inference-code" type="button">نسخ الأوامر</button>
+                        <pre id="backend-inference-code"><code>php artisan inference:compile-zone-assignments --tenant={tenant_id}
+php artisan inference:rebuild-segment-jobs --tenant={tenant_id}</code></pre>
+                    </div>
+                </article>
+
+                <article id="backend-integration" class="card">
+                    <h2>Checklist التكامل مع التطبيق</h2>
+                    <ol class="ordered-list">
+                        <li>اضبط <code>EXPO_PUBLIC_API_BASE_URL</code> على دومين Tenant الصحيح.</li>
+                        <li>اختبر <code>/employee/auth/login</code> وتأكد أن <code>access_token</code> يعود بشكل صحيح.</li>
+                        <li>اختبر <code>/employee/attendance/today</code> + <code>/employee/violations</code>.</li>
+                    </ol>
+                </article>
+
+                <article id="backend-troubleshooting" class="card">
+                    <h2>استكشاف الأعطال الشائعة</h2>
+                    <div class="issue">
+                        <h3>خطأ 401 من التطبيق</h3>
+                        <p>غالبًا التوكن منتهي/غير صالح أو الاتصال بدومين غير صحيح.</p>
+                    </div>
+                    <div class="issue">
+                        <h3>خطأ route للمخالفات</h3>
+                        <p>يعني endpoint غير متوفر في البيئة الحالية أو الدومين ليس Tenant domain الصحيح.</p>
+                    </div>
+                    <div class="issue">
+                        <h3>مشاكل check-in/check-out</h3>
+                        <p>راجع الحقول: <code>action</code>, <code>latitude</code>, <code>longitude</code> وحدود rate limit.</p>
+                    </div>
+                </article>
+            </section>
+
+            <section class="doc-panel" data-doc-panel="app">
+                <article id="app-overview" class="card">
+                    <h2>نظرة عامة على <code>ai-camera-app</code></h2>
+                    <p>
+                        تطبيق Expo خاص بالموظفين. يتيح تسجيل الدخول، تسجيل الحضور، مشاهدة الإشعارات والمخالفات،
+                        وتقديم اعتراض عند الحاجة.
+                    </p>
+                    <ul class="checklist">
+                        <li>Expo SDK 54 + React Native 0.81</li>
+                        <li>Expo Router للتنقل</li>
+                        <li>React Query لإدارة البيانات</li>
+                        <li>i18next لدعم العربي/الإنجليزي وRTL</li>
+                    </ul>
+                </article>
+
+                <article id="app-nontech" class="card">
+                    <h2>شرح مبسط لغير التقنيين</h2>
+                    <p>
+                        هذا هو تطبيق الموظف اليومي. الموظف يفتح التطبيق، يسجل دخول، ثم يسجل حضوره،
+                        ويتابع الإشعارات والمخالفات إن وجدت.
+                    </p>
+                    <h3>ما الذي يراه الموظف؟</h3>
+                    <ul class="checklist">
+                        <li><strong>الرئيسية:</strong> حالة الحضور الحالية وزر Check In / Check Out.</li>
+                        <li><strong>السجل:</strong> سجل الحضور الشهري.</li>
+                        <li><strong>المخالفات:</strong> المخالفات وتفاصيلها وإرسال اعتراض.</li>
+                        <li><strong>التنبيهات:</strong> الإشعارات الجديدة.</li>
+                        <li><strong>الملف الشخصي:</strong> بياناته الأساسية وإحصاءات مختصرة.</li>
+                    </ul>
+                </article>
+
+                <article id="app-setup" class="card">
+                    <h2>الإعداد والتشغيل المحلي</h2>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-setup-code" type="button">نسخ الأوامر</button>
+                        <pre id="app-setup-code"><code>cd ai-camera-app
 npm install
-# أو yarn install
-node reset-project.js
 npx expo start</code></pre>
                     </div>
-                </section>
-            </article>
+                    <h3>ملاحظات التنفيذ سطرًا بسطر</h3>
+                    <ol class="ordered-list step-notes">
+                        <li><code>cd ai-camera-app</code><p class="muted">ينقلك لمجلد تطبيق الموبايل.</p></li>
+                        <li><code>npm install</code><p class="muted">يثبّت مكتبات React Native وExpo المطلوبة.</p></li>
+                        <li><code>npx expo start</code><p class="muted">يشغّل Metro/Expo ويعرض QR للتشغيل على الجهاز.</p></li>
+                    </ol>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-commands-code" type="button">نسخ أوامر إضافية</button>
+                        <pre id="app-commands-code"><code>npm run android
+npm run ios
+npm run web
+npm run lint</code></pre>
+                    </div>
+                    <h3>ملاحظات الأوامر الإضافية</h3>
+                    <ol class="ordered-list step-notes">
+                        <li><code>npm run android</code><p class="muted">يفتح التطبيق مباشرة على Android Emulator/Device.</p></li>
+                        <li><code>npm run ios</code><p class="muted">يفتح التطبيق على iOS Simulator (يعمل عادة على macOS).</p></li>
+                        <li><code>npm run web</code><p class="muted">يشغّل نسخة ويب لاختبار الواجهات بسرعة.</p></li>
+                        <li><code>npm run lint</code><p class="muted">يفحص جودة الكود قبل النشر.</p></li>
+                    </ol>
+                </article>
 
-            <article id="requirements" class="card">
-                <h2>المتطلبات الأساسية</h2>
-                <ul class="checklist">
-                    <li>PHP</li>
-                    <li>Composer</li>
-                    <li>Node.js و npm</li>
-                    <li>قاعدة بيانات (MySQL أو أي محرك يدعمه Laravel)</li>
-                    <li>بيئة تشغيل Laravel محلية مثل XAMPP أو Sail أو Valet</li>
-                </ul>
-            </article>
-
-            <article id="installation" class="card">
-                <h2>التثبيت</h2>
-                <p>نفّذ الأوامر التالية بالترتيب:</p>
-                <div class="steps">
-                    <div class="step-item"><span class="step-number">1</span><p><code>cd ai-camera-backend-fresh</code></p></div>
-                    <div class="step-item"><span class="step-number">2</span><p><code>composer install</code></p></div>
-                    <div class="step-item"><span class="step-number">3</span><p><code>cp .env.example .env</code></p></div>
-                    <div class="step-item"><span class="step-number">4</span><p><code>php artisan key:generate</code></p></div>
-                    <div class="step-item"><span class="step-number">5</span><p>عدّل بيانات قاعدة البيانات داخل <code>.env</code></p></div>
-                    <div class="step-item"><span class="step-number">6</span><p><code>php artisan migrate --seed</code></p></div>
-                    <div class="step-item"><span class="step-number">7</span><p><code>npm install</code></p></div>
-                    <div class="step-item"><span class="step-number">8</span><p><code>npm run dev</code></p></div>
-                    <div class="step-item"><span class="step-number">9</span><p><code>php artisan test --compact</code></p></div>
-                    <div class="step-item"><span class="step-number">10</span><p><code>php artisan serve</code></p></div>
-                </div>
-
-                <div class="code-wrap">
-                    <button class="copy-btn" data-copy-target="install-cmds" type="button">نسخ الأوامر</button>
-                    <pre id="install-cmds"><code>cd ai-camera-backend-fresh
-composer install
-cp .env.example .env
-php artisan key:generate
-# عدّل بيانات قاعدة البيانات داخل .env
-php artisan migrate --seed
-npm install
-npm run dev
-php artisan test --compact
-php artisan serve</code></pre>
-                </div>
-            </article>
-
-            <article id="environment" class="card">
-                <h2>إعداد البيئة</h2>
-                <p>
-                    افتح ملف <code>.env</code> وحدّث إعدادات بيئتك محليًا.
-                    يجب تعديل بيانات قاعدة البيانات يدويًا قبل تشغيل migration.
-                </p>
-                <div class="code-wrap">
-                    <button class="copy-btn" data-copy-target="env-sample" type="button">نسخ المثال</button>
-                    <pre id="env-sample"><code>DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_user
-DB_PASSWORD=your_database_password</code></pre>
-                </div>
-            </article>
-
-            <article id="database" class="card">
-                <h2>إعداد قاعدة البيانات</h2>
-                <p>بعد تعديل <code>.env</code> شغّل:</p>
-                <div class="code-wrap">
-                    <pre><code>php artisan migrate --seed</code></pre>
-                </div>
-            </article>
-
-            <article id="frontend" class="card">
-                <h2>أصول الواجهة الأمامية</h2>
-                <div class="code-wrap">
-                    <pre><code>npm install
-npm run dev</code></pre>
-                </div>
-            </article>
-
-            <article id="tests" class="card">
-                <h2>تشغيل الاختبارات</h2>
-                <div class="code-wrap">
-                    <pre><code>php artisan test --compact</code></pre>
-                </div>
-            </article>
-
-            <article id="server" class="card">
-                <h2>تشغيل خادم التطوير</h2>
-                <div class="code-wrap">
-                    <pre><code>php artisan serve</code></pre>
-                </div>
-            </article>
-
-            <article id="status" class="card status-card">
-                <h2>الحالة الحالية / القيود</h2>
-                <ul>
-                    <li><strong>صفحات الأدمن:</strong> تمت إضافة إعداد بخطوة واحدة</li>
-                    <li><strong>صفحات السوبر أدمن:</strong> تمت إضافة إعداد بخطوة واحدة</li>
-                    <li><strong>صفحات التطبيق:</strong> تمت إضافة دليل إعداد كامل</li>
-                </ul>
-                <p>أصبحت أقسام Super Admin و Admin تحتوي على أوامر الإعداد الكاملة، كما تم إضافة دليل إعداد كامل لقسم التطبيق.</p>
-            </article>
-
-            <article id="troubleshooting" class="card">
-                <h2>استكشاف الأخطاء وإصلاحها</h2>
-
-                <div class="issue">
-                    <h3>مشكلة في مفتاح التطبيق</h3>
-                    <pre><code>php artisan key:generate</code></pre>
-                </div>
-
-                <div class="issue">
-                    <h3>مشكلة في قاعدة البيانات</h3>
-                    <ul>
-                        <li>تأكد من صحة القيم داخل <code>.env</code>.</li>
-                        <li>تأكد أن خدمة قاعدة البيانات تعمل.</li>
+                <article id="app-env" class="card">
+                    <h2>متغيرات البيئة</h2>
+                    <ul class="checklist">
+                        <li><code>EXPO_PUBLIC_API_BASE_URL</code> (رابط API)</li>
+                        <li><code>EXPO_PUBLIC_ATTENDANCE_LATITUDE</code></li>
+                        <li><code>EXPO_PUBLIC_ATTENDANCE_LONGITUDE</code></li>
                     </ul>
-                </div>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-env-local-code" type="button">Copy .env.local</button>
+                        <pre id="app-env-local-code"><code>EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8000</code></pre>
+                    </div>
+                    <div class="note">
+                        <p><strong>مهم:</strong> API URL يجب أن يكون Tenant domain يحتوي <code>/api</code>.</p>
+                    </div>
+                </article>
 
-                <div class="issue">
-                    <h3>مشاكل في أصول الواجهة</h3>
-                    <pre><code>npm install
-npm run dev</code></pre>
-                </div>
+                <article id="app-route-files" class="card">
+                    <h2>ملفات Routes في التطبيق وما الذي تفعله</h2>
+                    <p class="muted">هذا القسم يوضح كل ملفات المسارات داخل <code>src/app</code> ومسار كل ملف ووظيفته.</p>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th>الملف</th>
+                                    <th>Route</th>
+                                    <th>الوظيفة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>src/app/_layout.tsx</code></td><td>Layout Root</td><td>تهيئة Providers + حماية المسارات حسب الجلسة</td></tr>
+                                <tr><td><code>src/app/index.tsx</code></td><td><code>/</code></td><td>تحويل تلقائي إلى <code>/onboarding</code></td></tr>
+                                <tr><td><code>src/app/account-suspended.tsx</code></td><td><code>/account-suspended</code></td><td>شاشة تعليق الحساب (نسخة عامة)</td></tr>
+                                <tr><td><code>src/app/session-expired.tsx</code></td><td><code>/session-expired</code></td><td>شاشة انتهاء الجلسة (نسخة عامة)</td></tr>
+                                <tr><td><code>src/app/onboarding/index.tsx</code></td><td><code>/onboarding</code></td><td>اختيار اللغة وتوجيه المستخدم للمسار المناسب</td></tr>
 
-                <div class="issue">
-                    <h3>فشل في Migration</h3>
-                    <ul>
-                        <li>تأكد من وجود قاعدة البيانات.</li>
-                        <li>تحقق من صلاحيات المستخدم.</li>
+                                <tr><td><code>src/app/auth/_layout.tsx</code></td><td>Layout Auth</td><td>تنظيم شاشات المصادقة</td></tr>
+                                <tr><td><code>src/app/auth/index.tsx</code></td><td><code>/auth</code></td><td>شاشة تسجيل الدخول</td></tr>
+                                <tr><td><code>src/app/auth/forgot-password.tsx</code></td><td><code>/auth/forgot-password</code></td><td>طلب OTP</td></tr>
+                                <tr><td><code>src/app/auth/otp-verification.tsx</code></td><td><code>/auth/otp-verification</code></td><td>التحقق من OTP</td></tr>
+                                <tr><td><code>src/app/auth/reset-password.tsx</code></td><td><code>/auth/reset-password</code></td><td>إعادة تعيين كلمة المرور</td></tr>
+                                <tr><td><code>src/app/auth/account-suspended.tsx</code></td><td><code>/auth/account-suspended</code></td><td>رسالة حساب موقوف</td></tr>
+                                <tr><td><code>src/app/auth/session-expired.tsx</code></td><td><code>/auth/session-expired</code></td><td>رسالة انتهاء الجلسة</td></tr>
+
+                                <tr><td><code>src/app/(tabs)/_layout.tsx</code></td><td>Layout Tabs</td><td>تبويبات التطبيق الرئيسية</td></tr>
+                                <tr><td><code>src/app/(tabs)/index.tsx</code></td><td><code>/(tabs)</code></td><td>تحويل تلقائي إلى <code>/(tabs)/home</code></td></tr>
+                                <tr><td><code>src/app/(tabs)/home.tsx</code></td><td><code>/(tabs)/home</code></td><td>لوحة الحضور اليومية</td></tr>
+                                <tr><td><code>src/app/(tabs)/history.tsx</code></td><td><code>/(tabs)/history</code></td><td>سجل الحضور</td></tr>
+                                <tr><td><code>src/app/(tabs)/violations.tsx</code></td><td><code>/(tabs)/violations</code></td><td>قائمة المخالفات</td></tr>
+                                <tr><td><code>src/app/(tabs)/alerts.tsx</code></td><td><code>/(tabs)/alerts</code></td><td>الإشعارات</td></tr>
+                                <tr><td><code>src/app/(tabs)/profile.tsx</code></td><td><code>/(tabs)/profile</code></td><td>الملف الشخصي</td></tr>
+
+                                <tr><td><code>src/app/attendance/_layout.tsx</code></td><td>Layout Attendance</td><td>تنظيم شاشات وحدة الحضور</td></tr>
+                                <tr><td><code>src/app/attendance/index.tsx</code></td><td><code>/attendance</code></td><td>تحويل إلى <code>/attendance/final-records</code></td></tr>
+                                <tr><td><code>src/app/attendance/final-records.tsx</code></td><td><code>/attendance/final-records</code></td><td>السجلات النهائية للحضور</td></tr>
+                                <tr><td><code>src/app/attendance/raw-events.tsx</code></td><td><code>/attendance/raw-events</code></td><td>عرض الأحداث الخام</td></tr>
+                                <tr><td><code>src/app/attendance/adjustment.tsx</code></td><td><code>/attendance/adjustment</code></td><td>تقديم/مراجعة طلب تعديل</td></tr>
+                                <tr><td><code>src/app/attendance/gps-spoof.tsx</code></td><td><code>/attendance/gps-spoof</code></td><td>حالة رفض بسبب GPS Spoof</td></tr>
+                                <tr><td><code>src/app/attendance/outside-geofence.tsx</code></td><td><code>/attendance/outside-geofence</code></td><td>خارج النطاق الجغرافي</td></tr>
+                                <tr><td><code>src/app/attendance/offline.tsx</code></td><td><code>/attendance/offline</code></td><td>لا يوجد اتصال</td></tr>
+                                <tr><td><code>src/app/attendance/low-confidence.tsx</code></td><td><code>/attendance/low-confidence</code></td><td>حالة ثقة منخفضة</td></tr>
+                                <tr><td><code>src/app/attendance/matched-success.tsx</code></td><td><code>/attendance/matched-success</code></td><td>نجاح المطابقة/الحضور</td></tr>
+
+                                <tr><td><code>src/app/identity/_layout.tsx</code></td><td>Layout Identity</td><td>تنظيم شاشات الهوية</td></tr>
+                                <tr><td><code>src/app/identity/index.tsx</code></td><td><code>/identity</code></td><td>تحويل إلى <code>/identity/enrollment</code></td></tr>
+                                <tr><td><code>src/app/identity/enrollment.tsx</code></td><td><code>/identity/enrollment</code></td><td>بدء التسجيل الحيوي</td></tr>
+                                <tr><td><code>src/app/identity/scan-live.tsx</code></td><td><code>/identity/scan-live</code></td><td>فحص الوجه المباشر</td></tr>
+                                <tr><td><code>src/app/identity/matched-success.tsx</code></td><td><code>/identity/matched-success</code></td><td>نجاح المطابقة</td></tr>
+                                <tr><td><code>src/app/identity/low-confidence.tsx</code></td><td><code>/identity/low-confidence</code></td><td>تحذير ثقة منخفضة</td></tr>
+                                <tr><td><code>src/app/identity/enrollment-success.tsx</code></td><td><code>/identity/enrollment-success</code></td><td>نجاح التسجيل</td></tr>
+
+                                <tr><td><code>src/app/violation-details/[id].tsx</code></td><td><code>/violation-details/:id</code></td><td>تفاصيل مخالفة محددة حسب المعرّف</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article id="app-data-layer" class="card">
+                    <h2>طبقة البيانات (shared/*)</h2>
+                    <ul class="checklist">
+                        <li><code>shared/api</code>: عميل HTTP + إدارة الأخطاء</li>
+                        <li><code>shared/auth</code>: خدمات المصادقة والجلسة</li>
+                        <li><code>shared/attendance</code>: خدمات الحضور</li>
+                        <li><code>shared/notifications</code>: إدارة الإشعارات</li>
+                        <li><code>shared/violations</code>: المخالفات والاعتراضات</li>
+                        <li><code>shared/query</code>: مفاتيح وإعدادات React Query</li>
                     </ul>
-                </div>
-            </article>
+                </article>
+
+                <article id="app-auth" class="card">
+                    <h2>المصادقة والجلسة</h2>
+                    <ul class="checklist">
+                        <li>الجلسة تُحفظ في <code>AsyncStorage</code> بمفتاح <code>auth.session</code>.</li>
+                        <li>مدة افتراضية 24 ساعة.</li>
+                        <li><code>useLoginMutation</code> يخزن <code>access_token</code> ويحدث الكاش.</li>
+                        <li><code>useLogoutMutation</code> يمسح الجلسة والكاش.</li>
+                    </ul>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-auth-api-code" type="button">نسخ مسارات Auth API</button>
+                        <pre id="app-auth-api-code"><code>POST /employee/auth/login
+POST /employee/auth/forgot-password
+POST /employee/auth/verify-otp
+POST /employee/auth/reset-password
+POST /employee/auth/logout
+GET  /employee/me</code></pre>
+                    </div>
+                </article>
+
+                <article id="app-attendance" class="card">
+                    <h2>تدفق الحضور</h2>
+                    <ul class="checklist">
+                        <li><code>GET /employee/attendance/today</code> لعرض الحالة الحالية</li>
+                        <li><code>POST /employee/attendance</code> لإرسال check-in/check-out</li>
+                        <li><code>GET /employee/attendance</code> لعرض السجل الشهري</li>
+                    </ul>
+                    <p>
+                        في حال انقطاع الاتصال: الانتقال إلى <code>/attendance/offline</code>.
+                        في حال انتهاء الجلسة: <code>/auth/session-expired</code>.
+                    </p>
+                </article>
+
+                <article id="app-notifications-violations" class="card">
+                    <h2>الإشعارات والمخالفات</h2>
+                    <h3>الإشعارات</h3>
+                    <ul class="checklist">
+                        <li><code>GET /employee/notifications</code></li>
+                        <li><code>GET /employee/notifications/unread-count</code></li>
+                        <li><code>PATCH /employee/notifications/{id}/read</code></li>
+                        <li><code>POST /employee/notifications/mark-all-read</code></li>
+                    </ul>
+
+                    <h3>المخالفات</h3>
+                    <ul class="checklist">
+                        <li><code>GET /employee/violations</code> و<code>/summary</code></li>
+                        <li><code>GET /employee/violations/{id}</code></li>
+                        <li><code>POST /employee/violations/{id}/appeals</code></li>
+                    </ul>
+                </article>
+
+                <article id="app-testing" class="card">
+                    <h2>الاختبار والبناء</h2>
+                    <div class="code-wrap">
+                        <button class="copy-btn" data-copy-target="app-test-code" type="button">نسخ أوامر الفحص</button>
+                        <pre id="app-test-code"><code>npm run lint</code></pre>
+                    </div>
+                    <ul class="checklist">
+                        <li><code>development</code>: internal + dev client</li>
+                        <li><code>preview</code>: internal distribution</li>
+                        <li><code>production</code>: autoIncrement</li>
+                    </ul>
+                </article>
+
+                <article id="app-integration" class="card">
+                    <h2>Checklist التكامل مع Backend</h2>
+                    <ol class="ordered-list">
+                        <li>تأكد أن <code>EXPO_PUBLIC_API_BASE_URL</code> صحيح ويشير لـ Tenant domain.</li>
+                        <li>اختبر تسجيل الدخول واستلام التوكن.</li>
+                        <li>اختبر الحضور + الإشعارات + المخالفات على نفس البيئة.</li>
+                        <li>أي خطأ route يعني غالبًا البيئة/الدومين غير صحيحين.</li>
+                    </ol>
+                </article>
+            </section>
         </section>
     </main>
 

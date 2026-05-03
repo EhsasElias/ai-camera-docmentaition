@@ -1,12 +1,14 @@
-const root = document.documentElement;
+﻿const root = document.documentElement;
 const themeToggleButton = document.getElementById('theme-toggle');
 const themeLabel = document.getElementById('theme-label');
-const navLinks = Array.from(document.querySelectorAll('.toc a'));
 const copyButtons = Array.from(document.querySelectorAll('.copy-btn'));
-const roleTabs = Array.from(document.querySelectorAll('[data-role-tab]'));
-const rolePanels = Array.from(document.querySelectorAll('[data-role-panel]'));
+const docTabs = Array.from(document.querySelectorAll('[data-doc-tab]'));
+const docPanels = Array.from(document.querySelectorAll('[data-doc-panel]'));
+const tocGroups = Array.from(document.querySelectorAll('[data-toc]'));
 
 const THEME_KEY = 'docs-theme';
+let activeDoc = 'backend';
+let sectionObserver = null;
 
 function readPreferredTheme() {
     const saved = localStorage.getItem(THEME_KEY);
@@ -34,32 +36,104 @@ function toggleTheme() {
     applyTheme(next);
 }
 
-function setActiveLink(id) {
-    navLinks.forEach((link) => {
+function activeTocGroup() {
+    return document.querySelector(`[data-toc="${activeDoc}"]`);
+}
+
+function visiblePanel() {
+    return document.querySelector(`[data-doc-panel="${activeDoc}"]`);
+}
+
+function clearActiveLinks() {
+    tocGroups.forEach((group) => {
+        group.querySelectorAll('a').forEach((link) => link.classList.remove('active'));
+    });
+}
+
+function setActiveLinkById(id) {
+    const group = activeTocGroup();
+    if (!group) return;
+
+    group.querySelectorAll('a').forEach((link) => {
         const isActive = link.getAttribute('href') === `#${id}`;
         link.classList.toggle('active', isActive);
     });
 }
 
+function switchDoc(doc) {
+    activeDoc = doc;
+
+    docTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-doc-tab') === doc;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+    });
+
+    docPanels.forEach((panel) => {
+        panel.classList.toggle('is-active', panel.getAttribute('data-doc-panel') === doc);
+    });
+
+    tocGroups.forEach((group) => {
+        group.classList.toggle('is-active', group.getAttribute('data-toc') === doc);
+    });
+
+    clearActiveLinks();
+    observeSections();
+
+    const firstLink = activeTocGroup()?.querySelector('a');
+    if (firstLink) {
+        const href = firstLink.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            setActiveLinkById(href.slice(1));
+        }
+    }
+}
+
 function observeSections() {
-    const sections = Array.from(document.querySelectorAll('.content article'));
+    if (sectionObserver) {
+        sectionObserver.disconnect();
+    }
+
+    const panel = visiblePanel();
+    if (!panel) return;
+
+    const sections = Array.from(panel.querySelectorAll('article[id]'));
     if (!sections.length) return;
 
-    const observer = new IntersectionObserver(
+    sectionObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    setActiveLink(entry.target.id);
+                    setActiveLinkById(entry.target.id);
                 }
             });
         },
         {
-            rootMargin: '-30% 0px -55% 0px',
-            threshold: 0.1,
+            rootMargin: '-28% 0px -54% 0px',
+            threshold: 0.12,
         },
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => sectionObserver.observe(section));
+}
+
+function bindTocLinks() {
+    tocGroups.forEach((group) => {
+        group.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('#')) return;
+
+                const target = document.querySelector(href);
+                if (!target) return;
+
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setActiveLinkById(target.id);
+            });
+        });
+    });
 }
 
 async function copyTextByElementId(elementId, button) {
@@ -67,6 +141,7 @@ async function copyTextByElementId(elementId, button) {
     if (!codeElement) return;
 
     const originalLabel = button.textContent;
+
     try {
         await navigator.clipboard.writeText(codeElement.innerText.trim());
         button.textContent = 'تم النسخ';
@@ -84,43 +159,29 @@ function bindCopyButtons() {
         const targetId = button.getAttribute('data-copy-target');
         if (!targetId) return;
 
-        button.addEventListener('click', () =>
-            copyTextByElementId(targetId, button),
-        );
+        button.addEventListener('click', () => {
+            copyTextByElementId(targetId, button);
+        });
     });
 }
 
-function activateRoleTab(roleName) {
-    roleTabs.forEach((tab) => {
-        const active = tab.getAttribute('data-role-tab') === roleName;
-        tab.classList.toggle('is-active', active);
-        tab.setAttribute('aria-selected', String(active));
-    });
-
-    rolePanels.forEach((panel) => {
-        const active = panel.getAttribute('data-role-panel') === roleName;
-        panel.classList.toggle('is-active', active);
-    });
-}
-
-function bindRoleTabs() {
-    if (!roleTabs.length || !rolePanels.length) return;
-
-    roleTabs.forEach((tab) => {
+function bindDocTabs() {
+    docTabs.forEach((tab) => {
         tab.addEventListener('click', () => {
-            const roleName = tab.getAttribute('data-role-tab');
-            if (!roleName) return;
+            const targetDoc = tab.getAttribute('data-doc-tab');
+            if (!targetDoc) return;
 
-            activateRoleTab(roleName);
+            switchDoc(targetDoc);
         });
     });
 }
 
 function init() {
     applyTheme(readPreferredTheme());
-    observeSections();
+    bindDocTabs();
+    bindTocLinks();
     bindCopyButtons();
-    bindRoleTabs();
+    switchDoc(activeDoc);
 
     themeToggleButton?.addEventListener('click', toggleTheme);
 }
